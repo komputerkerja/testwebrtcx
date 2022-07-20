@@ -1,39 +1,60 @@
-let Socket, canvas, ctx, userVideo, userName, 
-    video, guestCtx
-
 window.addEventListener('load', init, false)
+const socket = io()
+const userName = "user"+Date.now()+""+Math.floor((Math.random()*100000))
+const guestCanvas = document.querySelector('.guest-video')
+guestCanvas.width = innerWidth*0.8
+guestCanvas.height = innerHeight*0.8
+const guestCtx = guestCanvas.getContext('2d')
 
 function init(){
-    guestCtx = guestcanvas.getContext('2d')
-    guestcanvas.width=380
-    guestcanvas.height=300
+    const video = document.createElement('video')
+    const userVideo = document.querySelector('.user-video')
+    const canvas = document.createElement('canvas')
+    const ctx = canvas.getContext('2d')
+    canvas.width=innerWidth
+    canvas.height=innerHeight
+    canvas.style.display = "none"
+    document.body.append(canvas)
+    let lastTime = 0
+    let fps = 60
+    let frameInterval = 1000/fps
+    let frameElapsed = 0
 
-    userName = "user"+Date.now()+""+Math.floor(Math.random()*10000)
-    video = document.createElement('video')
-    canvas = document.querySelector('#mycanvas')
-    ctx = canvas.getContext('2d')
-    userVideo = document.querySelector('.user-video')
-    video.width=150
-    video.height=90
-    canvas.width=380
-    canvas.height=300
+    video.width=100
+    video.height=100
     navigator.mediaDevices.getUserMedia({video:true})
     .then(stream => {
         video.srcObject = stream
         video.play()
         video.addEventListener('loadedmetadata', e => {
             userVideo.append(video)
-            setInterval(() => {
-                ctx.drawImage(video,0,0,canvas.width,canvas.height)
-                Socket.send(canvas.toDataURL())
-            },100)
+            animate(0)
         })
-    }).catch(err=>console.log(err))
-}
+    })
+    .catch(err => console.log(err))
+    function animate(timeStamp){
+        const deltaTime = timeStamp - lastTime
+        lastTime = timeStamp
+        
+        if(frameElapsed%frameInterval==0){
+            ctx.drawImage(video,0,0,canvas.width,canvas.height)
+            let imgData = canvas.toDataURL();
+            socket.emit('stream', {user: userName, stream: imgData})
+            frameElapsed = 0
+        } else frameElapsed += deltaTime
 
-Socket = new WebSocket('ws://' + window.location.hostname + ':8082')
-Socket.onopen = e => console.log('connected')
-Socket.onmessage = data => {
-    myimg.src = data.data
-    guestCtx.drawImage(myimg,0,0,guestcanvas.width,guestcanvas.height)
-}
+        requestAnimationFrame(animate)
+    }
+} 
+
+socket.on('message', data => {
+    console.log(data)
+})
+
+socket.on('stream', data => {
+    // if(data.user!=userName){
+        let myImage = new Image();
+        myImage.src = data.stream;
+        guestCtx.drawImage(myImage, 0, 0,guestCanvas.width,guestCanvas.height);
+    // }
+})

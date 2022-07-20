@@ -1,0 +1,5 @@
+sudah bisa tapi ngelag
+
+jangan lupa aktifkan
+kondisi if saat stream berlangsung
+yang sudah di uncomment (//)
