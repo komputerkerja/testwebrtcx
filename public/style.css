@@ -1,0 +1,29 @@
+body{
+    width: 100%;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.user-video{
+    width: 150px;
+    height: 90px;
+    background-color: black;
+    position: absolute;
+    top: 30px;
+    left: 30px;
+}
+#mycanvas{
+    background-color: black;
+    display: none;
+}
+.guest{
+    width: 380;
+    height: 300;
+    background-color: yellow;
+}#myimg{
+    display: none;
+}
