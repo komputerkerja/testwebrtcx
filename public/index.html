@@ -6,14 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="./style.css">
-    <script src="/socket.io/socket.io.js" defer></script>
-    <script src="./app.js" defer></script>
 </head>
 <body>
-
     
-        <%- body %> 
-      
+    <video autoplay width="200px" height="200px" id="user-video"></video>
+    <video autoplay width="200px" height="200px" id="remote-video"></video>
+
+    <script src="./socket.io/socket.io.js"></script>
+    <script src="./client.js"></script>
 
 </body>
 </html>

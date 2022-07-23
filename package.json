@@ -1,5 +1,5 @@
 {
-  "name": "stream_videos_clients",
+  "name": "webrtc12",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -11,9 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "ejs": "^3.1.8",
     "express": "^4.18.1",
-    "express-ejs-layouts": "^2.5.1",
     "socket.io": "^4.5.1"
   },
   "devDependencies": {

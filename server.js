@@ -1,37 +1,30 @@
 const express = require('express')
 const app = express()
-const ejsLayouts = require('express-ejs-layouts')
 const server = require('http').Server(app)
-const io = require('socket.io')(server)
+const socketIO = require('socket.io')
+const io = socketIO(server)
+const PORT = process.env.PORT || 3000
 
-const PORT = process.env.PORT || 5000
-
-app.set('view engine', 'ejs')
-app.use(ejsLayouts)
 app.use(express.static('public'))
-
-app.get('/', (req,res) => {
-    res.render('home');
-})
+app.get('/', (req,res) => res.render('index.html'))
 
 io.on('connection', socket => {
+    socket.join('room1')
+    const allSocketInRoom = io.sockets.adapter.rooms.get('room1')
+    if(allSocketInRoom.size > 1) socket.emit('other join',[...allSocketInRoom])
 
-    console.log('user connected')
-    io.emit('message', "selamat datang")
-
-    socket.on('disconnect', () => {
-        console.log('user disconnected')
+    socket.on('offer', data => {
+        socket.to(data.to).emit('offer', {offer:data.offer, from: data.from})
     })
 
-    socket.on('stream', data => {
-        io.emit('stream', data)
+    socket.on('answer', data => {
+        socket.to(data.to).emit('answer',{answer:data.answer, from: data.from})
     })
-    
+
+    socket.on('ice candidate', data => {
+        socket.to(data.to).emit('ice candidate', {candidate: data.candidate})
+    })
+
 })
-
-
-
-
-
 
 server.listen(PORT, () => console.log(`http://localhost:${PORT}`))
