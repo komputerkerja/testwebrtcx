@@ -3,6 +3,7 @@ const app = express()
 const server = require('http').Server(app)
 const socketIO = require('socket.io')
 const io = socketIO(server)
+const PORT = process.env.PORT || 5000
 
 app.use(express.static('public'))
 app.get('/',(req,res)=>res.render('index.html'))
@@ -18,4 +19,4 @@ io.on('connection', socket => {
     socket.on('disconnect', () => io.emit('call ended'))
 })
 
-server.listen(3000,()=>console.log(`http://localhost:${3000}`))
+server.listen(PORT,()=>console.log(`http://localhost:${PORT}`))
