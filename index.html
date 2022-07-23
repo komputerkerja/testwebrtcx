@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PeerJS</title>
+</head>
+<body>
+    
+    <div>
+        <input type="text" name="local-id" id="local-id">
+        <input type="text" name="remote-id" id="remote-id">
+        <input type="button" value="Call" id="call-btn">
+    </div>
+    <div>
+        <video id="local-video" width="200px;" height="200px"></video>
+        <video id="remote-video" width="200px;" height="200px"></video>
+    </div>
+
+    <script src="./peerjs.min.js"></script>
+    <!-- <script src="https://unpkg.com/peerjs@1.3.2/dist/peerjs.min.js"></script> -->
+    <script src="./app.js"></script>
+</body>
+</html>
