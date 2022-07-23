@@ -38,7 +38,6 @@ async function createPeerConnection(){
     const streamUserVideo = await navigator.mediaDevices.getUserMedia({video:true,audio:true})
     uservideo.muted=true
     uservideo.srcObject=streamUserVideo
-    uservideo.onloadedmetadata = () => uservideo.play()
     streamUserVideo.getTracks().forEach(track=>peer.addTrack(track,streamUserVideo))
     // handle peer events
     peer.onicecandidate=handleIceCandidate
@@ -56,7 +55,6 @@ async function handleTrack(e){
     const [stream] = e.streams
     remotevideo.muted = true
     remotevideo.srcObject = stream
-    remotevideo.onloadedmetadata = () => remotevideo.play()
 }
 
 async function handleIceCandidate(e){
